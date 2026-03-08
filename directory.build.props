@@ -1,0 +1,54 @@
+<Project>
+  <PropertyGroup Label="Target">
+    <TargetFramework>net11.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Language">
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <CheckForOverflowUnderflow Condition="'$(Configuration)' == 'Debug'">true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Analysis">
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>All</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors Condition="'$(CI)' == 'true'">true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);IDE0055</NoWarn>
+    <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Output">
+    <Deterministic>true</Deterministic>
+    <Optimize>true</Optimize>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Management">
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Symbols and Debugging">
+    <DebugType>embedded</DebugType>
+
+    <DebugSymbols Condition="'$(Configuration)' == 'Debug'">true</DebugSymbols>
+    <DebugSymbols Condition="'$(Configuration)' == 'Release'">true</DebugSymbols>
+
+    <EmbedAllSources>true</EmbedAllSources>
+
+    <Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
+    <Optimize Condition="'$(Configuration)' == 'Debug'">false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Runtime Performance">
+    <TieredPGO Condition="'$(Configuration)' == 'Release'">true</TieredPGO>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Documentation">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+</Project>
