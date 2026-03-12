@@ -5,69 +5,34 @@ using Celestials.Core.Errors;
 public readonly record struct Result<T>
 {
     public bool IsSuccess { get; }
-    public bool IsFailure => !IsSuccess;
+    public T? Value { get; }
+    public Error? Error { get; }
 
-    public T? Value
+    public Result(bool isSuccess, T? value, Error? error)
     {
-        get
+        if (isSuccess && error is not null)
         {
-            if (IsFailure)
-            {
-                throw new InvalidOperationException(
-                    "Cannot access Value when Result is a failure."
-                );
-            }
-
-            if (field is null)
-            {
-                throw new InvalidOperationException("Value is not initialized.");
-            }
-
-            return field;
+            throw new ArgumentException("A successful result cannot have an error.", nameof(error));
         }
-    }
 
-    public Error Error
-    {
-        get
+        if (!isSuccess && error is null)
         {
-            if (IsSuccess)
-            {
-                throw new InvalidOperationException(
-                    "Cannot access Error when Result is a success."
-                );
-            }
-
-            return field;
+            throw new ArgumentException("A failed result must have an error.", nameof(error));
         }
-    }
 
-    internal Result(T value)
-    {
-        IsSuccess = true;
+        if (isSuccess && value is null)
+        {
+            throw new ArgumentException("A successful result must have a value.", nameof(value));
+        }
+
+        IsSuccess = isSuccess;
         Value = value;
-    }
-
-    internal Result(Error error)
-    {
-        if (error.Type is ErrorType.None)
-        {
-            throw new ArgumentException(
-                "Error cannot be None for a failure result.",
-                nameof(error)
-            );
-        }
-
-        IsSuccess = false;
-        Value = default;
         Error = error;
     }
 
-    public static implicit operator bool(Result<T> result) => result.IsFailure;
+    internal static Result<T> Success(T value) => new(true, value, null);
 
-    public static implicit operator Result<T>(T value) => new(value);
-
-    public static implicit operator Result<T>(Error error) => new(error);
+    internal static Result<T> Failure(Error? error) => new(false, default, error);
 
     public override string ToString() => IsSuccess ? $"Success: {Value}" : $"Failure: {Error}";
 }

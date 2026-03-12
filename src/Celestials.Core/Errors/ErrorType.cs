@@ -10,6 +10,4 @@ public enum ErrorType : byte
     Unauthorized = 4,
     Forbidden = 5,
     Internal = 6,
-    Timeout = 7,
-    Dependency = 8,
 }

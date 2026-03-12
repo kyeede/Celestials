@@ -1,20 +1,18 @@
 namespace Celestials.Core.Abstractions;
 
-public abstract class Entity<TId> : AuditableEntity
+public abstract class Entity<TId>
     where TId : struct, IEquatable<TId>
 {
-    public TId Id { get; }
-
-    protected Entity()
-    {
-        EntityState = EntityState.Added;
-    }
+    public TId Id { get; protected set; }
 
     protected Entity(TId id)
     {
         Id = id;
-        EntityState = EntityState.Added;
     }
+
+    protected Entity() { }
+
+    public bool IsTransient() => Id.Equals(default);
 
     public bool Equals(Entity<TId>? other)
     {
@@ -33,31 +31,19 @@ public abstract class Entity<TId> : AuditableEntity
             return false;
         }
 
+        if (IsTransient() || other.IsTransient())
+        {
+            return false;
+        }
+
         return Id.Equals(other.Id);
     }
 
-    public sealed override bool Equals(object? obj)
-    {
-        return Equals(obj as Entity<TId>);
-    }
+    public sealed override bool Equals(object? obj) => Equals(obj as Entity<TId>);
 
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode();
-    }
+    public sealed override int GetHashCode() => Id.GetHashCode();
 
-    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
-    {
-        if (left is null)
-        {
-            return right is null;
-        }
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right) => Equals(left, right);
 
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
-    {
-        return !(left == right);
-    }
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right) => !Equals(left, right);
 }

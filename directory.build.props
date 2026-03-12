@@ -7,7 +7,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
-    <CheckForOverflowUnderflow Condition="'$(Configuration)' == 'Debug'">true</CheckForOverflowUnderflow>
+    <CheckForOverflowUnderflow Condition="'$(Configuration)' == 'Debug'"
+      >true</CheckForOverflowUnderflow
+    >
   </PropertyGroup>
 
   <PropertyGroup Label="Analysis">

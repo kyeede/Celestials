@@ -5,53 +5,29 @@ using Celestials.Core.Errors;
 public readonly record struct Result
 {
     public bool IsSuccess { get; }
-    public bool IsFailure => !IsSuccess;
+    public Error? Error { get; }
 
-    public Error Error
+    public Result(bool isSuccess, Error? error)
     {
-        get
+        if (isSuccess && error is not null)
         {
-            if (IsSuccess)
-            {
-                throw new InvalidOperationException(
-                    "Cannot access Error when Result is a success."
-                );
-            }
-
-            return field;
-        }
-    }
-
-    internal Result(Error error)
-    {
-        if (error.Type is ErrorType.None)
-        {
-            throw new ArgumentException(
-                "Error cannot be None for a failure result.",
-                nameof(error)
-            );
+            throw new ArgumentException("A successful result cannot have an error.", nameof(error));
         }
 
-        IsSuccess = false;
+        if (!isSuccess && error is null)
+        {
+            throw new ArgumentException("A failed result must have an error.", nameof(error));
+        }
+
+        IsSuccess = isSuccess;
         Error = error;
     }
 
-    private Result(bool isSuccess)
-    {
-        IsSuccess = isSuccess;
-    }
+    public static Result Success() => new(true, null);
 
-    public static Result Success() => new(true);
+    public static Result<T> Success<T>(T value) => new(true, value, null);
 
-    public static Result<T> Success<T>(T value) => new(value);
-
-    public static Result Failure(Error error) => new(error);
-
-    public static Result<T> Failure<T>(Error error) => new(error);
-
-    public static implicit operator bool(Result result) => result.IsFailure;
-
-    public static implicit operator Result(Error error) => Failure(error);
+    public static Result Failure(Error? error) => new(false, error);
 
     public override string ToString() => IsSuccess ? "Success" : $"Failure: {Error}";
 }
