@@ -7,7 +7,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
-max_line_length = 120
+max_line_length = 100
 guidelines = 105, 120
 guidelines_style = 1px solid 30808080, 1px dotted 40FF4444
 

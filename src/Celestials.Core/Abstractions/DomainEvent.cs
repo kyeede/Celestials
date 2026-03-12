@@ -1,17 +1,17 @@
 namespace Celestials.Core.Abstractions;
 
 using Celestials.Core.Contracts;
-using Celestials.Core.Identifiers;
+using Celestials.Core.ValueObjects.Identifiers;
 
 public abstract record DomainEvent : IDomainEvent
 {
     public EventId Id { get; }
     public DateTimeOffset OccurredAt { get; }
 
-    protected DomainEvent()
+    protected DomainEvent(DateTimeOffset occurredAt)
     {
-        Id = new EventId(Guid.NewGuid());
-        OccurredAt = DateTimeOffset.UtcNow;
+        Id = EventId.New();
+        OccurredAt = occurredAt;
     }
 
     protected DomainEvent(EventId id, DateTimeOffset occurredAt)

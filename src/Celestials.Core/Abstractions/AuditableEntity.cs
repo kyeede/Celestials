@@ -1,40 +1,94 @@
 namespace Celestials.Core.Abstractions;
 
-using Celestials.Core.Identifiers;
+using Celestials.Core.Errors;
+using Celestials.Core.Results;
+using Celestials.Core.ValueObjects.Identifiers;
 
-public abstract class AuditableEntity : TrackableEntity
+public abstract class AuditableEntity
 {
-    public DateTimeOffset CreatedAt { get; private set; }
-    public UserId CreatedBy { get; private set; }
+    public EntityState EntityState { get; protected set; }
 
-    public DateTimeOffset? LastModifiedAt { get; private set; }
-    public UserId? LastModifiedBy { get; private set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public UserId CreatedBy { get; set; }
 
-    public DateTimeOffset? DeletedAt { get; private set; }
-    public UserId? DeletedBy { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
+    public UserId? UpdatedBy { get; set; }
 
-    public bool IsSoftDeleted => DeletedAt.HasValue;
+    public DateTimeOffset? DeletedAt { get; set; }
+    public UserId? DeletedBy { get; set; }
 
-    protected AuditableEntity() { }
+    public bool IsDeleted => EntityState is EntityState.Deleted;
 
-    protected void MarkModified(UserId userId, DateTimeOffset timestamp)
+    protected AuditableEntity()
     {
-        LastModifiedAt = timestamp;
-        LastModifiedBy = userId;
-        MarkAsModified();
+        EntityState = EntityState.Unchanged;
     }
 
-    internal void MarkCreated(UserId userId, DateTimeOffset timestamp)
+    protected virtual Result MarkAsModified(UserId modifiedBy, DateTimeOffset modifiedAt)
     {
-        CreatedAt = timestamp;
-        CreatedBy = userId;
-        MarkAsAdded();
+        if (IsDeleted)
+        {
+            return Result.Failure(
+                Error.Conflict("Entity.Deleted", "Cannot modify a deleted entity.")
+            );
+        }
+
+        if (EntityState is not EntityState.Added)
+        {
+            EntityState = EntityState.Modified;
+        }
+
+        UpdatedBy = modifiedBy;
+        UpdatedAt = modifiedAt;
+
+        return Result.Success();
     }
 
-    internal void MarkDeleted(UserId userId, DateTimeOffset timestamp)
+    internal Result MarkAsAdded(UserId addedBy, DateTimeOffset addedAt)
     {
-        DeletedAt = timestamp;
-        DeletedBy = userId;
-        MarkAsDeleted();
+        if (IsDeleted)
+        {
+            return Result.Failure(
+                Error.Conflict("Entity.Lifecycle", "Cannot add an entity marked as deleted.")
+            );
+        }
+
+        EntityState = EntityState.Added;
+        CreatedBy = addedBy;
+        CreatedAt = addedAt;
+
+        return Result.Success();
+    }
+
+    internal Result MarkAsDeleted(UserId deletedBy, DateTimeOffset deletedAt)
+    {
+        if (EntityState is EntityState.Added)
+        {
+            return Result.Failure(
+                Error.Validation(
+                    "Entity.Lifecycle",
+                    "Discard unsaved new entities instead of deleting them."
+                )
+            );
+        }
+
+        EntityState = EntityState.Deleted;
+        DeletedBy = deletedBy;
+        DeletedAt = deletedAt;
+
+        return Result.Success();
+    }
+
+    internal Result MarkAsUnchanged()
+    {
+        if (IsDeleted)
+        {
+            return Result.Failure(
+                Error.Conflict("Entity.State", "Deleted entities cannot return to unchanged state.")
+            );
+        }
+
+        EntityState = EntityState.Unchanged;
+        return Result.Success();
     }
 }

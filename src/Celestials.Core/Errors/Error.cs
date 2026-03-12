@@ -1,75 +1,53 @@
 namespace Celestials.Core.Errors;
 
-public readonly record struct Error(ErrorType Type, string Code, string Message)
+using System.Diagnostics;
+
+[DebuggerDisplay("{GetDebuggerDisplay(),nq}")]
+public readonly record struct Error
 {
-    public static readonly Error None = new(ErrorType.None, ErrorCodes.None, string.Empty);
+    public static readonly Error None = new(ErrorType.None, string.Empty, string.Empty);
 
-    public static readonly Error NullValue = new(
-        ErrorType.Failure,
-        ErrorCodes.NullValue,
-        "The specified result value is null."
-    );
+    public ErrorType Type { get; }
+    public string Code { get; }
+    public string Message { get; }
 
-    public bool IsNone => Type is ErrorType.None;
-    public bool IsFailure => !IsNone;
-
-    public Error WithCode(string code)
+    public Error(ErrorType type, string code, string message)
     {
-        return this with { Code = code };
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
+
+        Type = type;
+        Code = code;
+        Message = message;
     }
 
-    public Error WithMessage(string message)
-    {
-        return this with { Message = message };
-    }
+    public override string ToString() => $"{Type}: {Code} - {Message}";
 
-    public static Error Failure(string message)
-    {
-        return new(ErrorType.Failure, ErrorCodes.Unexpected, message);
-    }
+    public static Error Validation(string code, string message) =>
+        new(ErrorType.Validation, code, message);
 
-    public static Error Validation(string message)
-    {
-        return new(ErrorType.Validation, ErrorCodes.Validation, message);
-    }
+    public static Error NotFound(string code, string message) =>
+        new(ErrorType.NotFound, code, message);
 
-    public static Error NotFound(string message)
-    {
-        return new(ErrorType.NotFound, ErrorCodes.NotFound, message);
-    }
+    public static Error Conflict(string code, string message) =>
+        new(ErrorType.Conflict, code, message);
 
-    public static Error Conflict(string message)
-    {
-        return new(ErrorType.Conflict, ErrorCodes.Conflict, message);
-    }
+    public static Error Unauthorized(string code, string message) =>
+        new(ErrorType.Unauthorized, code, message);
 
-    public static Error Unauthorized(string message)
-    {
-        return new(ErrorType.Unauthorized, ErrorCodes.Unauthorized, message);
-    }
+    public static Error Forbidden(string code, string message) =>
+        new(ErrorType.Forbidden, code, message);
 
-    public static Error Forbidden(string message)
-    {
-        return new(ErrorType.Forbidden, ErrorCodes.Forbidden, message);
-    }
+    public static Error Internal(string code, string message) =>
+        new(ErrorType.Internal, code, message);
 
-    public static Error Locked(string message)
-    {
-        return new(ErrorType.Locked, ErrorCodes.Locked, message);
-    }
+    public static Error Timeout(string code, string message) =>
+        new(ErrorType.Timeout, code, message);
 
-    public static Error Throttled(string message)
-    {
-        return new(ErrorType.Throttled, ErrorCodes.Throttled, message);
-    }
+    public static Error Dependency(string code, string message) =>
+        new(ErrorType.Dependency, code, message);
 
-    public static implicit operator Error(ErrorType type)
-    {
-        return new(type, ErrorCodes.None, string.Empty);
-    }
+    public static implicit operator bool(Error error) => error.Type is not ErrorType.None;
 
-    public override string ToString()
-    {
-        return $"[{Type}] {Code}: {Message}";
-    }
+    private string GetDebuggerDisplay() => $"{Type}: {Code} - {Message}";
 }

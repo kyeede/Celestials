@@ -4,90 +4,70 @@ using Celestials.Core.Errors;
 
 public readonly record struct Result<T>
 {
-    private readonly T? _value;
-
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
 
-    public Error Error { get; }
-
-    public T Value
+    public T? Value
     {
         get
         {
-            if (!IsSuccess)
+            if (IsFailure)
             {
-                throw new InvalidOperationException("Cannot access the value of a failed result.");
+                throw new InvalidOperationException(
+                    "Cannot access Value when Result is a failure."
+                );
             }
 
-            if (_value is null)
+            if (field is null)
             {
-                throw new InvalidOperationException("The result value is null.");
+                throw new InvalidOperationException("Value is not initialized.");
             }
 
-            return _value;
+            return field;
         }
     }
 
-    private Result(bool isSuccess, T? value, Error error)
+    public Error Error
     {
-        IsSuccess = isSuccess;
-        _value = value;
+        get
+        {
+            if (IsSuccess)
+            {
+                throw new InvalidOperationException(
+                    "Cannot access Error when Result is a success."
+                );
+            }
+
+            return field;
+        }
+    }
+
+    internal Result(T value)
+    {
+        IsSuccess = true;
+        Value = value;
+    }
+
+    internal Result(Error error)
+    {
+        if (error.Type is ErrorType.None)
+        {
+            throw new ArgumentException(
+                "Error cannot be None for a failure result.",
+                nameof(error)
+            );
+        }
+
+        IsSuccess = false;
+        Value = default;
         Error = error;
     }
 
-    internal static Result<T> Success(T value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-        return new(true, value, Error.None);
-    }
+    public static implicit operator bool(Result<T> result) => result.IsFailure;
 
-    internal static Result<T> Failure(Error error)
-    {
-        return new(false, default, error);
-    }
+    public static implicit operator Result<T>(T value) => new(value);
 
-    public Result<TOut> Map<TOut>(Func<T, TOut> mapper)
-    {
-        ArgumentNullException.ThrowIfNull(mapper);
-        return IsSuccess ? Result<TOut>.Success(mapper(Value)) : Result<TOut>.Failure(Error);
-    }
+    public static implicit operator Result<T>(Error error) => new(error);
 
-    public Result<TOut> Bind<TOut>(Func<T, Result<TOut>> binder)
-    {
-        ArgumentNullException.ThrowIfNull(binder);
-        return IsSuccess ? binder(Value) : Result<TOut>.Failure(Error);
-    }
-
-    public Result<T> Tap(Action<T> action)
-    {
-        ArgumentNullException.ThrowIfNull(action);
-
-        if (IsSuccess)
-        {
-            action(Value);
-        }
-
-        return this;
-    }
-
-    public static implicit operator Result<T>(T value)
-    {
-        return Success(value);
-    }
-
-    public static implicit operator Result<T>(Error error)
-    {
-        return Failure(error);
-    }
-
-    public static implicit operator Result(Result<T> result)
-    {
-        return result.IsSuccess ? Result.Success() : Result.Failure(result.Error);
-    }
-
-    public override string ToString()
-    {
-        return IsSuccess ? $"Success({_value})" : $"Failure({Error})";
-    }
+    public override string ToString() => IsSuccess ? $"Success: {Value}" : $"Failure: {Error}";
 }
