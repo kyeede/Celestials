@@ -1,6 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyName>Celestials.Core</AssemblyName>
-    <RootNamespace>Celestials.Core</RootNamespace>
-  </PropertyGroup>
+  <ItemGroup Label="Project References"></ItemGroup>
+  <ItemGroup Label="Package References"></ItemGroup>
 </Project>
