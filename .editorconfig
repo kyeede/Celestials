@@ -161,15 +161,6 @@ csharp_prefer_braces = true:error
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = false
 
-# ── 3.11  Blank lines (experimental) — all prohibited ────────────────────────
-dotnet_style_allow_multiple_blank_lines_experimental = false:error
-dotnet_style_allow_statement_immediately_after_block_experimental = false:error
-csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false:error
-csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false:error
-csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false:error
-csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:error
-csharp_style_allow_embedded_statements_on_same_line_experimental = false:error
-
 # ── 3.12  Brace & newline placement ──────────────────────────────────────────
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true

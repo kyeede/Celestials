@@ -1,4 +1,2 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup Label="Project References"></ItemGroup>
-  <ItemGroup Label="Package References"></ItemGroup>
 </Project>

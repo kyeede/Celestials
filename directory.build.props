@@ -1,56 +1,41 @@
 <Project>
-  <PropertyGroup Label="Target">
+  <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Language">
+    <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>preview</LangVersion>
-    <CheckForOverflowUnderflow Condition="'$(Configuration)' == 'Debug'"
-      >true</CheckForOverflowUnderflow
-    >
-  </PropertyGroup>
-
-  <PropertyGroup Label="Analysis">
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisMode>All</AnalysisMode>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <TreatWarningsAsErrors Condition="'$(CI)' == 'true'">true</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);IDE0055</NoWarn>
-    <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Output">
     <Deterministic>true</Deterministic>
-    <Optimize>true</Optimize>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors>nullable;CS8600;CS8602;CS8603;CS8618</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Label="Package Management">
+  <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode>true</RestoreLockedMode>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditLevel>moderate</NuGetAuditLevel>
   </PropertyGroup>
 
-  <PropertyGroup Label="Symbols and Debugging">
-    <DebugType>embedded</DebugType>
-
-    <DebugSymbols Condition="'$(Configuration)' == 'Debug'">true</DebugSymbols>
-    <DebugSymbols Condition="'$(Configuration)' == 'Release'">true</DebugSymbols>
-
-    <EmbedAllSources>true</EmbedAllSources>
-
-    <Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
-    <Optimize Condition="'$(Configuration)' == 'Debug'">false</Optimize>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
-  <PropertyGroup Label="Runtime Performance">
-    <TieredPGO Condition="'$(Configuration)' == 'Release'">true</TieredPGO>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Documentation">
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <PropertyGroup>
+    <TieredCompilation>true</TieredCompilation>
+    <TieredPGO>true</TieredPGO>
+    <ReadyToRun>true</ReadyToRun>
   </PropertyGroup>
 </Project>
