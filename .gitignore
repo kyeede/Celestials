@@ -1,0 +1,31 @@
+# Build outputs
+bin/
+obj/
+artifacts/
+out/
+TestResults/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# User/IDE files
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.user
+*.suo
+
+# Logs and temp
+*.log
+*.tmp
+*.cache
+
+# Local config/secrets
+.env
+.env.*
+appsettings.Development.json
+appsettings.Local.json

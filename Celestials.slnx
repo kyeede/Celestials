@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Celestials.Abstractions/Celestials.Abstractions.csproj" />
+    <Project Path="src/Celestials.Application/Celestials.Application.csproj" />
+    <Project Path="src/Celestials.Core/Celestials.Core.csproj" />
+    <Project Path="src/Celestials.Discord/Celestials.Discord.csproj" />
+    <Project Path="src/Celestials.Host/Celestials.Host.csproj" />
+    <Project Path="src/Celestials.Infrastructure/Celestials.Infrastructure.csproj" />
+  </Folder>
+</Solution>
