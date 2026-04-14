@@ -1,0 +1,48 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Microsoft.Extensions">
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup Label="EntityFramework">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup Label="Validation">
+    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="Discord">
+    <PackageVersion Include="Discord.Net" Version="3.19.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="Logging">
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="TemplatingAndCodeGen">
+    <PackageVersion Include="Scriban" Version="7.1.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="FluentAssertions" Version="8.9.0" />
+    <PackageVersion Include="coverlet.collector" Version="8.0.1" />
+  </ItemGroup>
+</Project>
