@@ -1,0 +1,75 @@
+<Project>
+  <!-- =========================================================================
+       Celestials - Directory.Build.props
+
+       Applies to every project under src/ and tests/.
+       Individual csproj files stay minimal; all shared metadata lives here.
+       ========================================================================= -->
+
+  <PropertyGroup Label="Target framework">
+    <TargetFramework>net11.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618;CS8625;CA2016;CA2100;CA5350;CA5351;nullable</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1812;CA1848</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Analyzers">
+    <AnalysisMode>Recommended</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <ReportAnalyzer>false</ReportAnalyzer>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Build">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <ErrorReport>prompt</ErrorReport>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly metadata">
+    <Company>Celestials</Company>
+    <Product>Celestials Discord Bot</Product>
+    <Authors>Celestials Contributors</Authors>
+    <Copyright>Copyright (c) 2026 Celestials Contributors</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Version>0.1.0</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <InformationalVersion>0.1.0</InformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Source link" Condition="'$(CI)' == 'true'">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSource>true</IncludeSource>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Test project defaults" Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1707;CA2007;CA1861;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Source project defaults" Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Threading.Tasks" />
+  </ItemGroup>
+</Project>

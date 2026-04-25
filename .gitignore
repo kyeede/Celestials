@@ -1,0 +1,104 @@
+# =============================================================================
+# Celestials — .gitignore (.NET, Rider, VS, VS Code)
+# =============================================================================
+
+# Build artefacts
+bin/
+obj/
+out/
+[Dd]ebug/
+[Rr]elease/
+[Dd]ebugPublic/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+Bin/
+Obj/
+
+# Visual Studio / Rider caches
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.lock.json
+project.lock.json
+
+# VS Code
+.vscode/
+!.vscode/launch.json.sample
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+**/*.testoutput
+*.cobertura.xml
+
+# dotnet-coverage
+coverage.opencover.xml
+coverage.cobertura.xml
+
+# Publish output
+PublishProfiles/
+publish/
+*.pubxml
+*.pubxml.user
+
+# Secrets
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+*.pfx
+*.snk
+.env
+.env.*
+!.env.example
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# Generated files
+**/Generated/
+StyleCop.Cache
+
+# Benchmark outputs
+BenchmarkDotNet.Artifacts/
+
+# Docker volumes for local dev
+.volumes/
+
+# EF Core design-time cache
+*.DesignerState.xml
+
+# Personal files
+docs/
+%NUGET_PACKAGES%/

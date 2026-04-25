@@ -1,0 +1,44 @@
+# =============================================================================
+# Celestials — .gitattributes
+# Normalize line endings and declare binary files to avoid merge issues.
+# =============================================================================
+
+# Auto-detect text files and normalise to LF in the repo, native on checkout
+* text=auto eol=lf
+
+# Force LF for all C#/config/text files everywhere
+*.cs       text eol=lf diff=csharp
+*.csproj   text eol=lf
+*.slnx     text eol=lf
+*.sln      text eol=lf -text
+*.props    text eol=lf
+*.targets  text eol=lf
+*.config   text eol=lf
+*.json     text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.md       text eol=lf
+*.xml      text eol=lf
+*.resx     text eol=lf
+
+# PowerShell / shell
+*.ps1      text eol=crlf
+*.psm1     text eol=crlf
+*.cmd      text eol=crlf
+*.bat      text eol=crlf
+*.sh       text eol=lf
+
+# Binary assets
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.ico      binary
+*.pfx      binary
+*.snk      binary
+*.zip      binary
+*.7z       binary
+*.gz       binary
+
+# Generated / vendor output should not muddy diffs
+**/Migrations/*.Designer.cs linguist-generated=true
